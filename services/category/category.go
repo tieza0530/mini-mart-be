@@ -1,4 +1,4 @@
-package services
+package category
 
 import (
 	"gorm.io/gorm"

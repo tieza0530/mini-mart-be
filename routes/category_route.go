@@ -3,12 +3,12 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"mini-mart-db/controllers"
+	"mini-mart-db/controllers/category"
 )
 
 func CategoryRoute(r *gin.RouterGroup, DB *gorm.DB) {
-	category := r.Group("/category")
+	categories := r.Group("/category")
 	{
-		category.GET("", controllers.GetCategory(DB))
+		categories.GET("", category.GetCategoryAll(DB))
 	}
 }

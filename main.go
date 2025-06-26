@@ -24,6 +24,8 @@ func main() {
 
 	v1 := r.Group("/v1")
 	routes.CategoryRoute(v1, config.DB)
+	routes.ServerRoute(v1, config.DB)
+	routes.AuthRoute(v1, config.DB)
 
 	r.Run(":8080")
 }
