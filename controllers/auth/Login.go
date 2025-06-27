@@ -20,17 +20,17 @@ func Login(DB *gorm.DB) func(c *gin.Context) {
 		secretKey := os.Getenv("SECRET_KEY")
 		var input LoginStruct
 		if err := c.ShouldBindJSON(&input); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.JSON(400, gin.H{"error": err.Error()})
 			return
 		}
 		user, err := auth.GetUserByAccount(DB, input.Username)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.JSON(404, gin.H{"error": err.Error()})
 			return
 		}
 
 		if user.Password == nil || !helper.CheckPasswordHash(input.Password, *user.Password) {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
+			c.JSON(401, gin.H{"error": "Invalid credentials"})
 			return
 		}
 		refreshToken, err := helper.GenerateJWT(secretKey, user.ID, 7*24*60)

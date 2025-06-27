@@ -36,7 +36,6 @@ func LogOut(DB *gorm.DB) func(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Cannot update user token"})
 			return
 		}
-
 		c.JSON(http.StatusOK, gin.H{"message": "Logout successful"})
 	}
 }

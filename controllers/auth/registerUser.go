@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"mini-mart-db/services/auth"
@@ -19,16 +18,14 @@ type UsersRegister struct {
 
 func RegisterUser(DB *gorm.DB) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		fmt.Println("jeelelellel")
 		var input UsersRegister
 		if err := c.ShouldBindJSON(&input); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		fmt.Println(input)
 		userData, refreshToken, err := auth.PostRegisterUser(DB, input.Account, input.Email, input.Password)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.JSON(409, gin.H{"error": err.Error()})
 			return
 		}
 		c.SetCookie("refresh_token", refreshToken, 7*24*60*60, "/", "", false, true)
